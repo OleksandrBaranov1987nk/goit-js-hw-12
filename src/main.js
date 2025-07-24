@@ -66,4 +66,3 @@ function showGallery(searchWord) {
     showGallery(sarchWord);
 
   }
-

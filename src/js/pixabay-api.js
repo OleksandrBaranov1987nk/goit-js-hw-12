@@ -3,16 +3,14 @@ const BASE_URL = 'https://pixabay.com/api/';
 
 
 
- export async function getImagesByQuery(query, page) {
+ export function getImages(searchWord) {
 
     const searchParamObj = new URLSearchParams({
         key: KEY,
-        q: query,
+        q: searchWord,
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
-        page: page,
-        per_page: 15
       });
     const LINK = `${BASE_URL}?${searchParamObj}`;
 

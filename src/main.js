@@ -6,7 +6,11 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 
-import { renderMarcup, showLoadMoreButton, hideLoadMoreButton } from "./js/render-functions.js";
+import {
+  renderMarcup,
+  showLoadMoreButton,
+  hideLoadMoreButton,
+} from "./js/render-functions.js";
 import { getImagesByQuery } from "./js/pixabay-api.js";
 
 const lightbox = new SimpleLightbox('.gallery a', {
@@ -20,7 +24,8 @@ const lightbox = new SimpleLightbox('.gallery a', {
   const gallery = document.querySelector('.gallery');
   const loader = document.querySelector('.loader');
   const loadMoreBtn = document.querySelector('.load-more');
-  
+  const PER_PAGE = 15;
+
   function showMessageError() {
     iziToast.error({
       message: 'Sorry, there are no images matching your search query. Please try again!',
@@ -33,8 +38,18 @@ const lightbox = new SimpleLightbox('.gallery a', {
     });
   }
 
+    function showEndCollectionMessage() {
+    iziToast.info({
+      message: "We're sorry, but you've reached the end of search results.",
+      messageColor: '#FFFFFF',
+      theme: 'dark',
+      position: 'topRight',
+    });
+  }
+
   let page = 1;
   let currentQuery = '';
+  let totalHits = 0;
 
   form.addEventListener('submit', onSearch);
   loadMoreBtn.addEventListener('click', onLoadMore);
@@ -69,6 +84,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
       loader.style.display = 'block';
       const data = await getImagesByQuery(currentQuery, page);
       const hits = data.hits;
+      totalHits = data.totalHits;
 
       if (hits.length === 0 && !isLoadMore) {
         showMessageError();
@@ -83,8 +99,10 @@ const lightbox = new SimpleLightbox('.gallery a', {
       }
       lightbox.refresh();
 
-      if (hits.length < 15) {
+      const totalPages = Math.ceil(totalHits / PER_PAGE);
+      if (page >= totalPages) {
         hideLoadMoreButton();
+        showEndCollectionMessage();
       } else {
         showLoadMoreButton();
       }

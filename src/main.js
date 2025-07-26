@@ -7,7 +7,7 @@ import "izitoast/dist/css/iziToast.min.css";
 
 
 import { renderMarcup } from "./js/render-functions.js";
-import { getImages } from "./js/pixabay-api.js";
+import { getImagesByQuery } from "./js/pixabay-api.js";
 
 const lightbox = new SimpleLightbox('.gallery a', {
     nav: true,
@@ -34,14 +34,13 @@ const lightbox = new SimpleLightbox('.gallery a', {
     }); 
 }
 
-function showGallery(searchWord) {
+function showGallery(searchWord, page = 1) {
   if (searchWord) {
     form.reset();
     gallery.innerHTML = '';
     loader.style.display = 'block';
-    getImages(searchWord)
-         .then(data => {
-          
+    getImagesByQuery(searchWord, page)
+         .then(data => {    
 
              const allImages = data.hits;  
              console.log(allImages);   

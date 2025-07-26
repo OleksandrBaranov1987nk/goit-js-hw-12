@@ -3,26 +3,31 @@ import axios from "axios";
 const KEY = '43440045-443c1624e1412379947e54b30';
 const BASE_URL = 'https://pixabay.com/api/';
 
-
-
-export async function getImagesByQuery(query, page) {
-  const searchParams = new URLSearchParams({
+const instance = axios.create({
+  baseURL: BASE_URL,
+  params: {
     key: KEY,
-    q: query,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,
-    page,
     per_page: 15,
-  });
+  },
+});
 
-    const url = `${BASE_URL}?${searchParams}`;
-
-
-    const response = await axios.get(url);
-    return response.data;
+export async function getImagesByQuery(query, page) {
+  try {
+    const { data } = await instance.get('', {
+      params: {
+        q: query,
+        page,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error('Failed to fetch images')
 
   }
-    // loader.style.display = 'block'; /-------появился----/
+}
+
 
 

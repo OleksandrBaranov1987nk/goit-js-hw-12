@@ -42,6 +42,25 @@
   background-color: #0a59e2;
 }
 
+.load-more {
+  display: block;
+  margin: 20px auto;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  color: #ffffff;
+  background-color: rgb(53, 10, 244);
+}
+
+.load-more:hover {
+  background-color: #0a59e2;
+}
+
+.is-hidden {
+  display: none;
+}
+
 .gallery {
   padding-left: 55px;
   margin-top: 25px;

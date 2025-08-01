@@ -1,24 +1,17 @@
-import SimpleLightbox from "simplelightbox";
-
-import "simplelightbox/dist/simple-lightbox.min.css";
-
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 
 import {
-  renderMarcup,
+  createGallery,
+  clearGallery,
+  showLoader,
+  hideLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
 } from "./js/render-functions.js";
 import { getImagesByQuery } from "./js/pixabay-api.js";
 
-const lightbox = new SimpleLightbox('.gallery a', {
-    nav: true,
-    captions: true,
-    captionsData: 'alt',
-    captionDelay: 150,
-  });
 
   const form = document.querySelector('.form');
   const gallery = document.querySelector('.gallery');
@@ -69,8 +62,8 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
     page = 1;
     currentQuery = query;
-    gallery.innerHTML = '';
-     hideLoadMoreButton();
+    clearGallery();
+    hideLoadMoreButton();
     await fetchImages();
   }
 
@@ -81,7 +74,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
   async function fetchImages(isLoadMore = false) {
     try {
-      loader.style.display = 'block';
+      showLoader();
       const data = await getImagesByQuery(currentQuery, page);
       const hits = data.hits;
       totalHits = data.totalHits;
@@ -91,13 +84,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
         return;
       }
 
-      const markup = renderMarcup(hits);
-      if (isLoadMore) {
-        gallery.insertAdjacentHTML('beforeend', markup);
-      } else {
-        gallery.innerHTML = markup;
-      }
-      lightbox.refresh();
+      createGallery(hits);
 
       const totalPages = Math.ceil(totalHits / PER_PAGE);
       if (page >= totalPages) {
@@ -114,7 +101,7 @@ const lightbox = new SimpleLightbox('.gallery a', {
     } catch (error) {
       showMessageError();
     } finally {
-      loader.style.display = 'none';
+      hideLoader();
     }
 
   }

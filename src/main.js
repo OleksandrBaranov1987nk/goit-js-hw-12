@@ -26,8 +26,9 @@ import { getImagesByQuery } from "./js/pixabay-api.js";
       titleColor: '#FFFFFF',
       messageColor: '#FFFFFF',
       theme: 'dark',
-      position: 'topRight',
-      messageSize: '400px',
+      position: 'bottomRight',
+      timeout: '5000',
+ 
     });
   }
 
@@ -105,3 +106,6 @@ import { getImagesByQuery } from "./js/pixabay-api.js";
     }
 
   }
+
+
+
